@@ -5,8 +5,8 @@ let router = express.Router();
 
 // Rutas Autenticación
 //inicio de sesion
-router.post("/auth/login", authController.ingresar);
-router.post("/registro", authController.registroUsuario);
+router.post("/auth/login", authController.ingresar2);
+router.post("/registro", authController.registroUsuario2);
 
 
 

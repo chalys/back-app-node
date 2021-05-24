@@ -1,22 +1,27 @@
 //import usuario from "./../models/usuario.js"
-import models from "./../models/"  // se puede agregar o no el index
+import models, { sequelize } from "./../models/"  // se puede agregar o no el index
+import bcrypt from "bcrypt"
 
+var BCRYPT_SALT_ROUNDS = 12;
 /**
  * Permite autenticarme
  * @param {*} req petición cliente
  * @param {*} res respuesta servidor
  */
 export const ingresar = function(req, res){
-    models.Usuario.findAll({
+    //select * from usuarios where email = req.body.email
+    //sequelize.query(`select * from usuarios wherer email = ${req.body.email}`)
+    
+    models.Usuario.findOne({
         where:{
             email:req.body.email
         }
-    }).then(user =>{
+    }).then((user) =>{
         console.log(user)
-        if (user.length == 0){
+        if (!user){
             res.json({mensaje: "El usuario no existe", error: true})
         } else{
-            if(req.body.password == user[0].password){
+            if(req.body.password == user.password){
                 res.json({mensaje:"Bienvenido", data: user, error:false})
             } else{
                 res.json({mensaje:"La contraseña es incorrecta", error: true})
@@ -29,6 +34,33 @@ export const ingresar = function(req, res){
     // lógica
     //res.send("Bienvenido Usuario");
     //res.json({mensaje: "Bienvenido usuario",error:false});
+}
+
+//ASync await
+
+export const ingresar2 = async function (req, res){
+
+    try {
+        let user = await models.Usuario.findOne({
+            where:{
+                email:req.body.email
+            }
+        });
+    
+        if (!user){
+            res.json({mensaje: "El usuario no existe", error: true})
+        }else{
+            let verif = await bcrypt.compare(req.body.password,user.password) 
+            if(verif){
+                res.json({mensaje:"Bienvenido", data: user, error:false})
+            } else{
+                res.json({mensaje:"La contraseña es incorrecta", error: true})
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({mensaje: "Error al autenticar", error: true});
+    }
 }
 
 /**
@@ -47,4 +79,31 @@ export const registroUsuario = function(req, res){
         res.json({mensaje: "Error al registrar el usuario", error: true});
     })
 
+}
+
+export const registroUsuario2 = async function(req, res){
+    //validar si es correcto, si no existe, si es unico
+    try{
+        let hashedPassword = await bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS)
+        req.body.password = hashedPassword
+        console.log("***********",hashedPassword)
+        
+        let user = await models.Usuario.findOne({
+            where:{
+                email:req.body.email
+            }
+        });
+
+        if(user){
+            res.json({mensaje:"El correo ya esta registrado", error: true})
+        }else{
+            let user = await models.Usuario.create(req.body)
+            console.log(user)
+            res.json({mensaje:"Usuario Registrado",dato: user, error: false})
+        }
+
+    }catch(error){
+        console.log(error);
+        res.json({mensaje: "Error al registrar el usuario", error: true}); 
+    }
 }
