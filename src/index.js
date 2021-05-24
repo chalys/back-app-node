@@ -1,5 +1,6 @@
 //importar modulos o dependencias de producción npm (express) framework
 import express from "express"
+import routes from "./routes/index.js";
 
 //Variables
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,13 @@ let app = express(); //inicializar
 //let app = require("express")(); otra forma de inicializar
 app.set("puerto", PORT);
 app.set("host", HOST);
+
+//json(req.body)
+app.use(express.json())// for parsing application/jso
+app.use(express.urlencoded({extended: true})) //for parsing application/x-www-form-urlencoded
+
+// config rutas
+app.use("/api",routes)
 
 // rutas
 app.get("/test", (req,res)=>{
