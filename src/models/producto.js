@@ -12,17 +12,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Producto.belongsTo(models.Categoria, {
-        foreignKey:'categoriaId'
+        foreignKey: 'categoriaId'
       });
-      //n:M
-      Producto.belongsToMany(models.Pedido,{
-        through: "PedidoProductos" //nombre de la tabla relación
+      // N:M
+      Producto.belongsToMany(models.Pedido, {
+        through: "PedidoProductos" // nombre de la tabla relación
       });
-      //N:M
-      Producto.belongsToMany(models.Proveedor,{
-        through: "ProductoProveedors" //nombre de la tabla relación
+      // N:M
+       Producto.belongsToMany(models.Proveedor, {
+        through: "ProductoProveedors" // nombre de la tabla relación
       });
-      
     }
   };
   Producto.init({

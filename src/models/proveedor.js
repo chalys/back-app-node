@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      //1:1(HasOne,belongsTo)
-      //1:N(hasMany, belongsTo)
-      //N:M(belongsToMany, belongsToMany)
-
-      //N:M
-      Proveedor.belongsToMany(models.Producto,{
-        through: "ProductoProveedors" //nombre de la tabla relación
+      // 1:1 (HasOne, belongsTo)
+      // 1:N (hasMany , belongsTo)
+      // N:M (belongsToMany, belongsToMany)
+      
+      // N:M
+      Proveedor.belongsToMany(models.Producto, {
+        through: "ProductoProveedors" // nombre de la tabla relación
       });
     }
   };

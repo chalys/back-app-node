@@ -11,15 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      //N:1
-      Pedido.belongsTo(models.cliente,{
-        foreignKey:'clienteId'
+      // N:1
+      Pedido.belongsTo(models.Cliente, {
+        foreignKey: "clienteId"
       });
 
-      //N:M
-      Pedido.belongsToMany(models.Producto,{
-        through: "PedidoProductos" //nombre de la tabla relación
+      // N:M
+      Pedido.belongsToMany(models.Producto, {
+        through: "PedidoProductos" // nombre de la tabla relación
       });
+
     }
   };
   Pedido.init({
