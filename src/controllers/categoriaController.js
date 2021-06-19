@@ -46,7 +46,7 @@ export const guardar = async function(req, res){
     }
 } 
 
-export const modificar = async function(re,res){
+export const modificar = async function(req,res){
     const id_cat = req.params.id;
     // update Categoria nombre='prueba' where id:id_cat
     try{

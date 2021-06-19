@@ -24,7 +24,7 @@ router.delete("/categoria/:id", catController.eliminar);
 
 router.get("/proveedor", provController.lista);
 router.post("/proveedor", provController.guardar);
-//router.put("/proveedor/:id", provController.modificar);
+router.put("/proveedor/:id", provController.modificar);
 router.delete("/proveedor/:id", provController.eliminar);
  
 

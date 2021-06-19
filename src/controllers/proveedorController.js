@@ -3,19 +3,18 @@ import models from "./../models"
 export const lista = async function (req, res) {
     // select * from proveedores (SQL)
     try {
-        let datos = await models.Proveedor.findAll();
-        /*         {
-                    order:[
-                        ['id','DESC'],
-                    ]
-                } */
+        let datos = await models.Proveedor.findAll({
+            order: [
+                ['id', 'DESC'],
+            ]
+        });
+
         res.json(datos);
     } catch (error) {
         res.status(500).send({
             mensaje: error.message || 'Error al consultar la base de datos'
         })
     }
-
 }
 
 export const guardar = async function (req, res) {
@@ -47,15 +46,20 @@ export const guardar = async function (req, res) {
 
 }
 
-export const modificar = async function (re, res) {
-    const id_cat = req.params.id;
-    // update Proveedor nombre='prueba' where id:id_cat
+export const modificar = async function (req, res) {
+    const id_prov = req.params.id;
+    // update Proveedor nombre='prueba' where id:id_prov
     try {
-        await models.Proveedor.update(req.body, {
+        let data = await models.Proveedor.update(req.body, {
             where: {
-                id: id_cat
+                id: id_prov
             }
         })
+        res.json({
+            mensaje: "Proveedor Modificado",
+            data: data,
+            error: false
+        });
     } catch (error) {
         res.status(500).send({
             error: true,
